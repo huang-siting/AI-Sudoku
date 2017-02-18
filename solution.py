@@ -26,6 +26,10 @@ def cross(A, B):
     "Cross product of elements in A and elements in B."
     return [s+t for s in A for t in B]
 
+def zipper(A, B):
+    "zip elements in A and elements in B."
+    return [x[0]+x[1] for x in zip(A,B)]
+
 def grid_values(grid):
     """
     Convert grid into a dict of {square: char} with '123456789' for empties.
@@ -133,19 +137,6 @@ def search(values):
         if attempt: 
             return attempt
 
-
-rows = 'ABCDEFGHI'
-cols = '123456789'
-
-boxes = cross(rows, cols)
-
-row_units = [cross(r, cols) for r in rows]
-column_units = [cross(rows, c) for c in cols]
-square_units = [cross(rs, cs) for rs in ('ABC','DEF','GHI') for cs in ('123','456','789')]
-unitlist = row_units + column_units + square_units
-units = dict((s, [u for u in unitlist if s in u]) for s in boxes)
-peers = dict((s, set(sum(units[s],[]))-set([s])) for s in boxes)
-
 def solve(grid):
     """
     Find the solution to a Sudoku grid.
@@ -159,6 +150,20 @@ def solve(grid):
     values = search(values)
     
     return values
+
+# Setting up the board
+rows = 'ABCDEFGHI'
+cols = '123456789'
+
+boxes = cross(rows, cols)
+
+row_units = [cross(r, cols) for r in rows]
+column_units = [cross(rows, c) for c in cols]
+square_units = [cross(rs, cs) for rs in ('ABC','DEF','GHI') for cs in ('123','456','789')]
+diagonal_units = [zipper(list(rows), list(cols)), zipper(list(rows)[::-1], list(cols))]
+unitlist = row_units + column_units + square_units + diagonal_units
+units = dict((s, [u for u in unitlist if s in u]) for s in boxes)
+peers = dict((s, set(sum(units[s],[]))-set([s])) for s in boxes)
 
 
 if __name__ == '__main__':
