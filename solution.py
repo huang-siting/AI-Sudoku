@@ -33,7 +33,7 @@ def naked_twins(values):
                 peer_keys = list(unit_dict.keys())
                 for x in new_dict[k_value]: 
                     peer_keys.remove(x)
-                #remove digits of  naked twins from their pears
+                #remove digits of naked twins from their pears
                 for digit in k_value: 
                     for k in peer_keys: 
                         values[k] = values[k].replace(digit,'') 
@@ -117,7 +117,7 @@ def only_choice(values):
 def reduce_puzzle(values):
     pass
     """ 
-    Iterate eliminate() and only_choice(). If at some point, there is a box with no available values, return False.
+    Iterate eliminate(), only_choice() and naked_twins(). If at some point, there is a box with no available values, return False.
     If the sudoku is solved, return the sudoku.
     If after an iteration of both functions, the sudoku remains the same, return the sudoku.  
     Input: A sudoku in dictionary form.

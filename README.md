@@ -3,11 +3,13 @@
 
 # Question 1 (Naked Twins)
 Q: How do we use constraint propagation to solve the naked twins problem?  
-A: *Student should provide answer here*
+A: The function naked_twins() will look into each unit and check if there are any naked twins within the unit. If there are naked twins, we will remove the naked twins digits from other boxes outside the two naked twins. This strategy will therefore further reduce the search space. This naked_twins() function is applied at the same place where strategies eliminate and only_choice are applied in function reduce_puzzle() because they serve the same purpose of reducing search space as much as possible before DFS.
+
 
 # Question 2 (Diagonal Sudoku)
 Q: How do we use constraint propagation to solve the diagonal sudoku problem?  
-A: *Student should provide answer here*
+A: To solve the diagonal sudoku, we should consider the two sets of diagaonal boxs as two addional units which have same constraint as other units such as the complete rows, columns and 3x3 squares. This will further reduce possible values of the empty boxes. Now there will be 29 units in total. 
+I add a helper function zipper() to construct two diagonal units and then add the two units in the unitlist. The rest of the code remained unchanged because we apply the same strategies, e.g. elimination and only choice, equally on all units. 
 
 ### Install
 
