@@ -10,6 +10,8 @@ def assign_value(values, box, value):
         assignments.append(values.copy())
     return values
 
+from collections import defaultdict
+
 def naked_twins(values):
     """Eliminate values using the naked twins strategy.
     Args:
@@ -18,9 +20,26 @@ def naked_twins(values):
     Returns:
         the values dictionary with the naked twins eliminated from peers.
     """
+    for unit in unitlist: 
+        # create a new dictionary {values in boxes: (list of box)}
+        unit_dict = {x:values[x] for x in unit}
+        new_dict = defaultdict(list)
+        for k,v in unit_dict.items(): 
+            new_dict[v].append(k) 
+    
+        for k_value in new_dict: 
+            if len(k_value)==2 and len(new_dict[k_value])==2: #naked twins
+                #list of keys for peers of naked twins in the unit
+                peer_keys = list(unit_dict.keys())
+                for x in new_dict[k_value]: 
+                    peer_keys.remove(x)
+                #remove digits of  naked twins from their pears
+                for digit in k_value: 
+                    for k in peer_keys: 
+                        values[k] = values[k].replace(digit,'') 
 
-    # Find all instances of naked twins
-    # Eliminate the naked twins as possibilities for their peers
+    return values
+
 
 def cross(A, B):
     "Cross product of elements in A and elements in B."
@@ -110,6 +129,7 @@ def reduce_puzzle(values):
         solved_values_before = len([box for box in values.keys() if len(values[box]) == 1])
         values = eliminate(values)
         values = only_choice(values)
+        values = naked_twins(values)
         solved_values_after = len([box for box in values.keys() if len(values[box]) == 1])
         stalled = solved_values_before == solved_values_after
         if len([box for box in values.keys() if len(values[box]) == 0]):
