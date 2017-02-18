@@ -87,7 +87,7 @@ def only_choice(values):
         for i in digits: 
             my_set = [box for box in unit if i in values[box]] 
             if len(my_set) == 1: 
-                values[my_set[0]] = i 
+                assign_value(values, box=my_set[0], value=i)
                 
     return values
 
@@ -128,10 +128,11 @@ def search(values):
     # Now use recursion to solve each one of the resulting sudokus, and if one returns a value (not False), return that answer!
     for value in values[b]: 
         new_values = values.copy() 
-        new_values[b] = value 
+        assign_value(new_values, b, value)
         attempt = search(new_values) 
         if attempt: 
             return attempt
+
 
 rows = 'ABCDEFGHI'
 cols = '123456789'
@@ -154,7 +155,6 @@ def solve(grid):
     Returns:
         The dictionary representation of the final sudoku grid. False if no solution exists.
     """
-   
     values = grid_values(grid)
     values = search(values)
     
